@@ -53,8 +53,8 @@ body { font-family: 'Jost', sans-serif; background: var(--warm); color: var(--in
 .btn-ghost { display: inline-flex; align-items: center; gap: .5rem; padding: .75rem 1.8rem; border: 1px solid var(--stone-light); color: var(--stone); font-size: .75rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; border-radius: 50px; transition: border-color .25s, color .25s; }
 .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
 .hero-right { position: relative; background: transparent; overflow: hidden; }
-.hero-right-img { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-.hero-right-img img { max-width: 95%; max-height: 95%; width: auto; height: auto; object-fit: contain; display: block; mix-blend-mode: multiply; }
+.hero-right-img { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 1rem; background-image: url('images/empty%20.jpg'), url('images/Wallpaper%20.jpg'); background-repeat: no-repeat, no-repeat; background-position: center, center; background-size: contain, cover; background-blend-mode: multiply; }
+.hero-right-img img { display: none; }
 .hero-photos { display: none; }
 .hero-photos-top { display: grid; grid-template-columns: 60% 40%; gap: 4px; }
 .hphoto { background: rgba(255,255,255,0.25); overflow: hidden; }
