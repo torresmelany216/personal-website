@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melany Torres — Content Creator</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&family=Cormorant:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:       #D4748A;
+  --rose-light: #EAA8B5;
+  --blush:      #F5DCE2;
+  --petal:      #FDF4F6;
+  --nude:       #EDE0D4;
+  --warm:       #FAF7F4;
+  --ink:        #26201E;
+  --stone:      #7A6E6A;
+  --stone-light:#B5ABA6;
+  --cream:      #F2EDE6;
+  --white:      #FFFFFF;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Jost', sans-serif; background: var(--warm); color: var(--ink); overflow-x: hidden; cursor: none; }
+
+/* CURSOR */
+.cursor { width: 10px; height: 10px; background: var(--rose); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .25s, height .25s; }
+.cursor-ring { width: 36px; height: 36px; border: 1px solid var(--rose-light); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: left .12s ease, top .12s ease, width .3s, height .3s; opacity: .6; }
+
+/* NAV */
+#nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 3.5rem; transition: background .4s, box-shadow .4s; }
+#nav.scrolled { background: rgba(250,247,244,.95); backdrop-filter: blur(14px); box-shadow: 0 1px 0 rgba(212,116,138,.12); }
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: bold; text-transform: uppercase; color: var(--ink); text-decoration: none; }
+.nav-items { display: flex; align-items: center; gap: .2rem; list-style: none; }
+.nav-items a { display: block; padding: .4rem .9rem; font-size: .68rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--stone); text-decoration: none; border-radius: 50px; transition: color .25s, background .25s; }
+.nav-items a:hover, .nav-items a.active { color: var(--rose); background: var(--blush); }
+.nav-cta { background: var(--rose) !important; color: white !important; }
+.nav-cta:hover { background: var(--ink) !important; color: white !important; }
+
+/* HERO */
+#hero { min-height: 100vh; display: grid; grid-template-columns: 55% 45%; overflow: hidden; position: relative; }
+.hero-left { display: flex; flex-direction: column; justify-content: center; padding: 9rem 4rem 6rem; position: relative; z-index: 2; }
+.hero-kicker { display: flex; align-items: center; gap: .75rem; font-size: .65rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--rose); margin-bottom: 1.8rem; opacity: 0; animation: rise .9s .1s forwards; }
+.hero-kicker::before { content: ''; display: block; width: 28px; height: 1px; background: var(--rose); }
+.hero-headline { font-family: 'Libre Baskerville', serif; font-size: clamp(3.2rem,5.5vw,5rem); font-weight: 400; line-height: 1.06; color: var(--ink); margin-bottom: 1rem; opacity: 0; animation: rise .9s .25s forwards; }
+.hero-headline em { font-style: italic; color: var(--rose); }
+.hero-sub { font-family: 'Cormorant', serif; font-size: 1.3rem; font-style: italic; font-weight: 300; color: var(--stone); margin-bottom: 2rem; line-height: 1.5; max-width: 440px; opacity: 0; animation: rise .9s .4s forwards; }
+.hero-badges { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 2.5rem; opacity: 0; animation: rise .9s .55s forwards; }
+.badge { font-size: .7rem; font-weight: 500; letter-spacing: .08em; padding: .4rem 1rem; border-radius: 50px; border: 1px solid var(--rose-light); color: var(--ink); background: var(--white); }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: rise .9s .7s forwards; }
+.btn-primary { display: inline-flex; align-items: center; gap: .5rem; padding: .75rem 2rem; background: var(--rose); color: white; font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; border-radius: 50px; transition: background .25s, transform .2s; }
+.btn-primary:hover { background: var(--ink); transform: translateY(-2px); }
+.btn-ghost { display: inline-flex; align-items: center; gap: .5rem; padding: .75rem 1.8rem; border: 1px solid var(--stone-light); color: var(--stone); font-size: .75rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; border-radius: 50px; transition: border-color .25s, color .25s; }
+.btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
+.hero-right { position: relative; background: var(--blush); overflow: hidden; }
+.hero-photos { position: absolute; inset: 0; display: grid; grid-template-rows: 60% 40%; gap: 4px; padding: 4px; }
+.hero-photos-top { display: grid; grid-template-columns: 60% 40%; gap: 4px; }
+.hphoto { background: var(--nude); overflow: hidden; }
+.hphoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hphoto-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; color: var(--stone-light); font-size: .65rem; letter-spacing: .12em; text-transform: uppercase; }
+.hphoto-placeholder .ph-icon { font-size: 2rem; opacity: .4; }
+.hero-float-tag { position: absolute; bottom: 2rem; left: -1rem; background: var(--ink); color: white; padding: .9rem 1.4rem; font-size: .7rem; line-height: 1.5; max-width: 200px; z-index: 3; opacity: 0; animation: rise 1s 1s forwards; }
+.hero-float-tag strong { display: block; font-family: 'Cormorant', serif; font-size: 1.3rem; font-style: italic; font-weight: 400; color: var(--rose-light); margin-bottom: .15rem; }
+
+/* MARQUEE */
+.marquee-strip { background: var(--rose); color: white; padding: .75rem 0; overflow: hidden; white-space: nowrap; }
+.marquee-inner { display: inline-flex; animation: marquee 22s linear infinite; }
+.marquee-item { font-size: .65rem; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; padding: 0 2.5rem; }
+.marquee-dot { opacity: .5; }
+
+/* SECTIONS */
+.section { padding: 7rem 4rem; position: relative; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.eyebrow { display: flex; align-items: center; gap: .75rem; font-size: .62rem; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--rose); margin-bottom: 1rem; }
+.eyebrow::before { content: ''; display: block; width: 22px; height: 1px; background: var(--rose); }
+h2.display { font-family: 'Libre Baskerville', serif; font-size: clamp(2rem,3.8vw,3.2rem); font-weight: 400; line-height: 1.12; color: var(--ink); margin-bottom: 2rem; }
+h2.display em { font-style: italic; color: var(--rose); }
+.body-copy { font-size: .93rem; line-height: 1.95; color: var(--stone); max-width: 600px; }
+.body-copy strong { color: var(--ink); font-weight: 500; }
+
+/* ABOUT */
+#about { background: var(--white); }
+.about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; align-items: center; }
+.about-photos { position: relative; height: 620px; }
+.about-photo-main { position: absolute; top: 0; left: 0; width: 72%; height: 78%; overflow: hidden; background: var(--nude); }
+.about-photo-accent { position: absolute; bottom: 0; right: 0; width: 52%; height: 50%; overflow: hidden; background: var(--blush); border: 5px solid var(--warm); }
+.about-photo-main img, .about-photo-accent img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about-photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem; color: var(--stone-light); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; }
+.about-photo-placeholder span { font-size: 2rem; opacity: .3; }
+.about-pull { font-family: 'Cormorant', serif; font-size: 1.55rem; font-style: italic; font-weight: 300; line-height: 1.5; color: var(--ink); border-left: 2px solid var(--rose); padding-left: 1.5rem; margin: 2rem 0; }
+.about-facts { display: flex; gap: 2rem; flex-wrap: wrap; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--blush); }
+.fact { display: flex; align-items: center; gap: .5rem; font-size: .78rem; color: var(--stone); }
+.fact-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose-light); flex-shrink: 0; }
+
+/* ORIGIN */
+#origin { background: var(--ink); overflow: hidden; }
+#origin .eyebrow { color: var(--rose-light); }
+#origin .eyebrow::before { background: var(--rose-light); }
+#origin h2.display { color: var(--white); }
+#origin h2.display em { color: var(--rose-light); }
+.origin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.origin-text .body-copy { color: rgba(255,255,255,.55); max-width: 520px; }
+.origin-text .body-copy strong { color: var(--white); }
+.origin-timeline { display: flex; flex-direction: column; }
+.tl-item { display: grid; grid-template-columns: 64px 1fr; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,.07); }
+.tl-item:last-child { border-bottom: none; }
+.tl-year { font-family: 'Cormorant', serif; font-size: 1.1rem; font-style: italic; color: var(--rose-light); font-weight: 300; padding-top: .1rem; }
+.tl-title { font-size: .82rem; font-weight: 600; color: white; margin-bottom: .3rem; }
+.tl-body { font-size: .78rem; line-height: 1.7; color: rgba(255,255,255,.4); }
+
+/* PILLARS */
+#pillars { background: var(--cream); }
+.pillars-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 3.5rem; }
+.pillars-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--nude); border: 1px solid var(--nude); overflow: hidden; }
+.pillar { background: var(--cream); padding: 2.2rem 1.6rem; transition: background .3s; position: relative; overflow: hidden; }
+.pillar::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg,var(--rose),var(--rose-light)); transform: scaleX(0); transform-origin: left; transition: transform .35s ease; }
+.pillar:hover { background: var(--white); }
+.pillar:hover::after { transform: scaleX(1); }
+.pillar-num { font-family: 'Cormorant', serif; font-size: 2.5rem; font-weight: 300; color: var(--blush); line-height: 1; margin-bottom: 1.2rem; }
+.pillar-emoji { font-size: 1.5rem; margin-bottom: .8rem; display: block; }
+.pillar-title { font-family: 'Libre Baskerville', serif; font-size: .95rem; font-weight: 700; color: var(--ink); margin-bottom: .6rem; line-height: 1.3; }
+.pillar-body { font-size: .78rem; line-height: 1.75; color: var(--stone); }
+
+/* VIDEOS */
+#videos { background: var(--petal); }
+.videos-intro { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: end; margin-bottom: 3rem; }
+.videos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.video-card { position: relative; }
+.video-shell { position: relative; padding-bottom: 177.78%; background: var(--ink); overflow: hidden; border-radius: 4px; }
+.video-shell iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+.video-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 1.5rem; background: linear-gradient(to top,rgba(38,32,30,.88) 0%,transparent 50%); text-decoration: none; transition: background .3s; }
+.video-overlay:hover { background: linear-gradient(to top,rgba(212,116,138,.7) 0%,transparent 60%); }
+.video-tag { align-self: flex-start; font-size: .58rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--rose-light); background: rgba(0,0,0,.4); padding: .3rem .7rem; border-radius: 50px; margin-bottom: auto; }
+.video-play { width: 44px; height: 44px; border: 1.5px solid rgba(255,255,255,.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: .9rem; margin-bottom: .5rem; }
+.video-title { font-family: 'Cormorant', serif; font-size: 1.05rem; font-style: italic; color: white; text-align: center; margin-bottom: .5rem; line-height: 1.35; }
+.video-info { padding: .8rem 0 0; display: flex; justify-content: space-between; }
+.video-stat { font-size: .68rem; color: var(--stone); }
+.video-platform { font-size: .62rem; font-weight: 600; letter-spacing: .1em; color: var(--rose); text-transform: uppercase; }
+
+/* STATS */
+#stats { background: var(--white); }
+.stats-top { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; margin-bottom: 4rem; }
+.big-stat-strip { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+.big-stat { padding: 2rem 1.5rem; background: var(--petal); border-top: 3px solid var(--rose); }
+.big-stat-num { font-family: 'Libre Baskerville', serif; font-size: 2.8rem; font-weight: 700; color: var(--ink); line-height: 1; margin-bottom: .3rem; }
+.big-stat-label { font-size: .65rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--stone); }
+.platforms-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--blush); border: 1px solid var(--blush); overflow: hidden; }
+.plat-card { background: var(--white); padding: 2rem 1.8rem; text-align: center; transition: background .3s; }
+.plat-card:hover { background: var(--petal); }
+.plat-icon { font-size: 1.6rem; margin-bottom: .7rem; }
+.plat-name { font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: .2rem; }
+.plat-handle { font-size: .7rem; color: var(--rose); margin-bottom: 1.2rem; }
+.plat-divider { height: 1px; background: var(--blush); margin-bottom: 1.2rem; }
+.plat-metrics { display: flex; justify-content: space-around; gap: .5rem; }
+.pm-num { font-family: 'Libre Baskerville', serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); line-height: 1; }
+.pm-lbl { font-size: .58rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--stone-light); margin-top: .2rem; }
+.pm-note { font-size: .65rem; color: var(--stone-light); font-style: italic; text-align: center; margin-top: 1.5rem; }
+
+/* AUDIENCE */
+#audience { background: var(--cream); }
+.audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+.aud-bars { margin-top: .5rem; }
+.aud-bar { margin-bottom: 1.6rem; }
+.aud-bar-head { display: flex; justify-content: space-between; font-size: .8rem; font-weight: 500; color: var(--ink); margin-bottom: .5rem; }
+.aud-bar-pct { color: var(--stone); font-weight: 400; }
+.aud-track { height: 3px; background: var(--blush); border-radius: 2px; overflow: hidden; }
+.aud-fill { height: 100%; background: linear-gradient(90deg,var(--rose),var(--rose-light)); border-radius: 2px; transition: width 1.8s cubic-bezier(.16,1,.3,1); width: 0; }
+.aud-note { font-size: .65rem; color: var(--stone-light); font-style: italic; margin-top: 1.2rem; }
+.aud-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+.atag { font-size: .68rem; padding: .38rem .9rem; border: 1px solid var(--rose-light); border-radius: 50px; color: var(--ink); background: var(--white); }
+
+/* BRANDS */
+#brands { background: var(--petal); }
+.brands-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; }
+.brand-card { border: 1px solid var(--blush); padding: 2.5rem 2rem; transition: border-color .3s, box-shadow .3s, transform .3s; position: relative; overflow: hidden; background: var(--white); }
+.brand-card:hover { border-color: var(--rose); box-shadow: 0 8px 40px rgba(212,116,138,.12); transform: translateY(-3px); }
+.brand-check { position: absolute; top: 1.2rem; right: 1.2rem; font-size: .6rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: var(--rose); background: var(--petal); padding: .28rem .7rem; border-radius: 50px; }
+.brand-emoji { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
+.brand-name { font-family: 'Libre Baskerville', serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); margin-bottom: .25rem; }
+.brand-cat { font-size: .62rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--rose); margin-bottom: 1rem; }
+.brand-desc { font-size: .8rem; line-height: 1.75; color: var(--stone); }
+
+/* WHY */
+#why { background: var(--ink); position: relative; overflow: hidden; }
+#why::before { content: 'MT'; position: absolute; right: -2rem; bottom: -4rem; font-family: 'Libre Baskerville', serif; font-size: 28rem; font-style: italic; color: rgba(255,255,255,.02); pointer-events: none; line-height: 1; }
+#why .eyebrow { color: var(--rose-light); }
+#why .eyebrow::before { background: var(--rose-light); }
+#why h2.display { color: white; }
+#why h2.display em { color: var(--rose-light); }
+.why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.06); margin-top: 3rem; overflow: hidden; }
+.why-item { background: var(--ink); padding: 2.2rem 2rem; transition: background .3s; }
+.why-item:hover { background: rgba(212,116,138,.07); }
+.why-num { font-family: 'Cormorant', serif; font-size: 2rem; font-weight: 300; color: rgba(212,116,138,.25); line-height: 1; margin-bottom: 1rem; }
+.why-title { font-size: .88rem; font-weight: 600; color: white; margin-bottom: .5rem; }
+.why-body { font-size: .78rem; line-height: 1.78; color: rgba(255,255,255,.4); }
+
+/* CONTACT */
+#contact { background: var(--petal); text-align: center; padding: 8rem 4rem; }
+#contact .eyebrow { justify-content: center; }
+.contact-lede { font-family: 'Cormorant', serif; font-size: 1.2rem; font-style: italic; font-weight: 300; color: var(--stone); margin-bottom: 2.5rem; }
+.contact-email-link { display: inline-block; font-family: 'Libre Baskerville', serif; font-size: clamp(1.3rem,2.5vw,1.8rem); font-style: italic; color: var(--rose); text-decoration: none; border-bottom: 1px solid var(--rose-light); padding-bottom: .1rem; margin-bottom: 2.5rem; transition: color .25s; }
+.contact-email-link:hover { color: var(--ink); border-color: var(--ink); }
+.contact-socials { display: flex; justify-content: center; flex-wrap: wrap; gap: .75rem; margin-bottom: 3rem; }
+.soc-btn { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem 1.5rem; border: 1px solid var(--rose-light); border-radius: 50px; font-size: .72rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); text-decoration: none; transition: all .25s; background: var(--white); }
+.soc-btn:hover { background: var(--rose); border-color: var(--rose); color: white; }
+.contact-types { display: flex; justify-content: center; flex-wrap: wrap; gap: .5rem; margin-bottom: 4rem; }
+.ctype { font-size: .68rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: var(--stone-light); padding: .3rem .9rem; border: 1px dashed var(--rose-light); border-radius: 50px; }
+.contact-sig { font-family: 'Cormorant', serif; font-size: 3rem; font-style: italic; font-weight: 300; color: var(--rose-light); letter-spacing: .05em; }
+
+/* FOOTER */
+footer { background: var(--ink); display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 4rem; flex-wrap: wrap; gap: 1rem; }
+.footer-logo { font-family: 'Cormorant', serif; font-size: 1rem; font-style: italic; color: rgba(255,255,255,.4); text-decoration: none; }
+.footer-copy { font-size: .62rem; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.2); }
+
+/* ANIMATIONS */
+@keyframes rise { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+@keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+.reveal { opacity:0; transform:translateY(32px); transition:opacity .85s ease, transform .85s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:.1s; }
+.reveal-delay-2 { transition-delay:.2s; }
+.reveal-delay-3 { transition-delay:.3s; }
+.reveal-delay-4 { transition-delay:.4s; }
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  body { cursor:auto; }
+  .cursor,.cursor-ring { display:none; }
+  #nav { padding:0 1.5rem; }
+  .nav-items { display:none; }
+  #hero { grid-template-columns:1fr; }
+  .hero-left { padding:7rem 1.5rem 2rem; }
+  .hero-right { height:400px; }
+  .about-grid,.origin-grid,.stats-top,.audience-grid { grid-template-columns:1fr; gap:3rem; }
+  .about-photos { height:360px; }
+  .section { padding:4rem 1.5rem; }
+  .pillars-intro,.videos-intro { grid-template-columns:1fr; gap:1.5rem; }
+  .pillars-grid { grid-template-columns:1fr 1fr; }
+  .videos-grid { grid-template-columns:1fr; max-width:340px; margin:0 auto; }
+  .platforms-row,.brands-grid { grid-template-columns:1fr; }
+  .why-grid { grid-template-columns:1fr 1fr; }
+  .big-stat-strip { grid-template-columns:1fr 1fr; }
+  footer { flex-direction:column; text-align:center; padding:1.2rem; }
+  #contact { padding:5rem 1.5rem; }
+}
+@media(max-width:540px){
+  .pillars-grid,.why-grid,.big-stat-strip { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#hero">Melany Torres</a>
+  <ul class="nav-items">
+    <li><a href="#about">About</a></li>
+    <li><a href="#origin">My Story</a></li>
+    <li><a href="#pillars">Content</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#brands">Brands</a></li>
+    <li><a href="#contact" class="nav-cta">Work With Me</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-kicker">Chicago · UIUC Advertising '26</div>
+    <h1 class="hero-headline">Melany <em>Torres</em></h1>
+    <p class="hero-sub">First-gen college student. Mexican-American from Chicago. Creating content that makes the girlies feel seen.</p>
+    <div class="hero-badges">
+      <span class="badge">TikTok</span>
+      <span class="badge">Instagram</span>
+      <span class="badge">YouTube</span>
+      <span class="badge">15K+ Following</span>
+      <span class="badge">3 Brand Deals</span>
+    </div>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#contact">Work With Me</a>
+      <a class="btn-ghost" href="#videos">Watch My Content</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photos">
+      <div class="hero-photos-top">
+        <div class="hphoto"><div class="hphoto-placeholder"><span class="ph-icon">📸</span>Add photo</div></div>
+        <div class="hphoto"><div class="hphoto-placeholder"><span class="ph-icon">📸</span>Add photo</div></div>
+      </div>
+      <div class="hphoto"><div class="hphoto-placeholder"><span class="ph-icon">📸</span>Add photo</div></div>
+    </div>
+    <div class="hero-float-tag"><strong>@mmelanytorress</strong>TikTok · Instagram · YouTube</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">First-Gen College Life</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Women's Empowerment</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Latina Culture</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Chicago Roots</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Authentic Storytelling</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Raw &amp; Relatable</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">First-Gen College Life</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Women's Empowerment</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Latina Culture</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Chicago Roots</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Authentic Storytelling</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Raw &amp; Relatable</span><span class="marquee-dot">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-photos reveal">
+        <div class="about-photo-main"><div class="about-photo-placeholder"><span>📸</span>Add main photo</div></div>
+        <div class="about-photo-accent"><div class="about-photo-placeholder"><span>🍵</span>Lifestyle photo</div></div>
+      </div>
+      <div>
+        <div class="eyebrow reveal">Meet Melany</div>
+        <h2 class="display reveal reveal-delay-1">The girl behind<br>the <em>camera.</em></h2>
+        <p class="body-copy reveal reveal-delay-2">I'm Melany Torres — 21, <strong>Mexican-American, Chicago born and raised</strong> in Bogan/Cragin. My family is from Mexico, and that culture is woven into everything I am and everything I make. Family isn't just something I value — it's my foundation.</p>
+        <blockquote class="about-pull reveal reveal-delay-2">"I create for the girls who grew up between two worlds and are still figuring out how to carry both."</blockquote>
+        <p class="body-copy reveal reveal-delay-3">I'm a <strong>junior studying Advertising at the University of Illinois Urbana-Champaign</strong> — a first-gen student who packed up her whole life and moved hours from home to build something. I document all of it: the homesickness, the growth, the matcha runs, the travels to San Francisco, Phoenix, and Mexico. The real stuff.</p>
+        <div class="about-facts reveal reveal-delay-4">
+          <span class="fact"><span class="fact-dot"></span>Loves matcha</span>
+          <span class="fact"><span class="fact-dot"></span>Chicago native</span>
+          <span class="fact"><span class="fact-dot"></span>Family first</span>
+          <span class="fact"><span class="fact-dot"></span>Traveler</span>
+          <span class="fact"><span class="fact-dot"></span>Advertising student</span>
+          <span class="fact"><span class="fact-dot"></span>Pink everything</span>
+          <span class="fact"><span class="fact-dot"></span>Adan is my husband</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORIGIN -->
+<section id="origin" class="section">
+  <div class="section-inner">
+    <div class="origin-grid">
+      <div class="origin-text">
+        <div class="eyebrow reveal">My Story</div>
+        <h2 class="display reveal reveal-delay-1">I've been a creator<br>since before I knew<br><em>what that meant.</em></h2>
+        <p class="body-copy reveal reveal-delay-2">At <strong>14 years old</strong>, I secretly started a YouTube channel — no guide, no budget, just a camera and something to say. By the time I was <strong>15, I had 10,000 subscribers</strong>. Real people, real growth, real community. Built completely on my own.</p>
+        <p class="body-copy reveal reveal-delay-2" style="margin-top:1rem;">Life pulled me away from it. But content never left me. Last year I came back — with a plan, a purpose, and a community that was waiting. Now I'm at <strong>15K+ across platforms</strong> and building toward the full-time creator career I've always known was mine.</p>
+      </div>
+      <div class="origin-timeline reveal reveal-delay-2">
+        <div class="tl-item">
+          <div class="tl-year">2017</div>
+          <div><div class="tl-title">Secret YouTube Channel, Age 14</div><div class="tl-body">Started creating with zero resources. Just pure instinct and a story worth telling.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2018</div>
+          <div><div class="tl-title">10,000 Subscribers at 15</div><div class="tl-body">Grew organically — no ads, no team, no shortcut. Proved early that authenticity is a strategy.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2023</div>
+          <div><div class="tl-title">UIUC — First-Gen College Student</div><div class="tl-body">First in my family to go to college. Moved from Chicago and started documenting the whole journey.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2024</div>
+          <div><div class="tl-title">Back & Building — 15K+ Following</div><div class="tl-body">Returned full-time across TikTok, Instagram, and YouTube. First brand deals. First viral moments.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2026</div>
+          <div><div class="tl-title">Graduating — Creator Full-Time</div><div class="tl-body">Finishing my Advertising degree and stepping into content creation as a career. This is the plan.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section id="pillars" class="section">
+  <div class="section-inner">
+    <div class="pillars-intro">
+      <div>
+        <div class="eyebrow reveal">What I Create</div>
+        <h2 class="display reveal reveal-delay-1">Content that<br>comes from <em>real life.</em></h2>
+      </div>
+      <p class="body-copy reveal reveal-delay-2">I don't chase trends. I document life — the messy, beautiful, in-between parts that most creators skip over. That's where my audience lives, and that's where I stay.</p>
+    </div>
+    <div class="pillars-grid reveal">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <span class="pillar-emoji">🎓</span>
+        <div class="pillar-title">First-Gen College Life</div>
+        <p class="pillar-body">The unfiltered reality of being the first in your family to go to college. Missing home, finding yourself, crying in the parking lot — and showing it anyway.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <span class="pillar-emoji">💪</span>
+        <div class="pillar-title">Women's Empowerment</div>
+        <p class="pillar-body">Motivational content for the girlies who need it. Real talk about confidence, ambition, and knowing your worth — no toxic positivity, just truth.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <span class="pillar-emoji">🌮</span>
+        <div class="pillar-title">Latina Culture & Identity</div>
+        <p class="pillar-body">Mexican-American from Chicago. My heritage, my community, my family — worn openly and celebrated loudly in every piece of content I make.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04</div>
+        <span class="pillar-emoji">✈️</span>
+        <div class="pillar-title">Lifestyle & Travel</div>
+        <p class="pillar-body">From Chicago matcha shops to San Francisco, Mexico, and Phoenix. Life lived out loud and shared with a community that comes along for the ride.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos" class="section">
+  <div class="section-inner">
+    <div class="videos-intro">
+      <div>
+        <div class="eyebrow reveal">Featured Content</div>
+        <h2 class="display reveal reveal-delay-1">Videos that<br><em>hit different.</em></h2>
+      </div>
+      <p class="body-copy reveal reveal-delay-2">My most-watched moments aren't polished productions — they're the real ones. The crying on camera, the honest talks, the stories everyone relates to but nobody else was brave enough to post. That's my lane.</p>
+    </div>
+    <div class="videos-grid reveal">
+      <div class="video-card">
+        <div class="video-shell">
+          <a class="video-overlay" href="https://www.tiktok.com/@mmelanytorress" target="_blank">
+            <span class="video-tag">Most Viral</span>
+            <div class="video-play">▶</div>
+            <div class="video-title">"Freshman Drop-Off"<br>Crying Video</div>
+          </a>
+        </div>
+        <div class="video-info"><span class="video-stat">Add view count</span><span class="video-platform">TikTok / IG</span></div>
+      </div>
+      <div class="video-card">
+        <div class="video-shell">
+          <a class="video-overlay" href="https://www.tiktok.com/@mmelanytorress" target="_blank">
+            <span class="video-tag">Fan Favorite</span>
+            <div class="video-play">▶</div>
+            <div class="video-title">Add your<br>top reel here</div>
+          </a>
+        </div>
+        <div class="video-info"><span class="video-stat">Add view count</span><span class="video-platform">TikTok / IG</span></div>
+      </div>
+      <div class="video-card">
+        <div class="video-shell">
+          <a class="video-overlay" href="https://www.instagram.com/mmelanytorress/" target="_blank">
+            <span class="video-tag">Most Shared</span>
+            <div class="video-play">▶</div>
+            <div class="video-title">Add your<br>top reel here</div>
+          </a>
+        </div>
+        <div class="video-info"><span class="video-stat">Add view count</span><span class="video-platform">Instagram</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats" class="section">
+  <div class="section-inner">
+    <div class="stats-top">
+      <div>
+        <div class="eyebrow reveal">By The Numbers</div>
+        <h2 class="display reveal reveal-delay-1">A small community<br>with a <em>big voice.</em></h2>
+        <p class="body-copy reveal reveal-delay-2">Micro-creators drive macro results. My audience follows me because they <strong>trust me</strong> — not because an algorithm pushed them to. That trust is what makes every brand integration actually convert.</p>
+      </div>
+      <div class="big-stat-strip reveal reveal-delay-2">
+        <div class="big-stat"><div class="big-stat-num">15K+</div><div class="big-stat-label">Total Following</div></div>
+        <div class="big-stat"><div class="big-stat-num">3+</div><div class="big-stat-label">Brand Deals</div></div>
+        <div class="big-stat"><div class="big-stat-num">7+</div><div class="big-stat-label">Yrs Creating</div></div>
+        <div class="big-stat"><div class="big-stat-num">3</div><div class="big-stat-label">Platforms</div></div>
+      </div>
+    </div>
+    <div class="platforms-row reveal">
+      <div class="plat-card">
+        <div class="plat-icon">🎵</div>
+        <div class="plat-name">TikTok</div>
+        <div class="plat-handle">@mmelanytorress</div>
+        <div class="plat-divider"></div>
+        <div class="plat-metrics">
+          <div><div class="pm-num">—</div><div class="pm-lbl">Followers</div></div>
+          <div><div class="pm-num">—</div><div class="pm-lbl">Avg Views</div></div>
+          <div><div class="pm-num">—</div><div class="pm-lbl">Engagement</div></div>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-icon">📸</div>
+        <div class="plat-name">Instagram</div>
+        <div class="plat-handle">@mmelanytorress</div>
+        <div class="plat-divider"></div>
+        <div class="plat-metrics">
+          <div><div class="pm-num">—</div><div class="pm-lbl">Followers</div></div>
+          <div><div class="pm-num">—</div><div class="pm-lbl">Avg Views</div></div>
+          <div><div class="pm-num">—</div><div class="pm-lbl">Engagement</div></div>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-icon">▶️</div>
+        <div class="plat-name">YouTube</div>
+        <div class="plat-handle">@mmelanytorress</div>
+        <div class="plat-divider"></div>
+        <div class="plat-metrics">
+          <div><div class="pm-num">—</div><div class="pm-lbl">Subscribers</div></div>
+          <div><div class="pm-num">—</div><div class="pm-lbl">Avg Views</div></div>
+          <div><div class="pm-num">—</div><div class="pm-lbl">Watch Time</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="pm-note reveal">*Update with your exact analytics — upload your screenshots and I'll plug the real numbers in.</p>
+  </div>
+</section>
+
+<!-- AUDIENCE -->
+<section id="audience" class="section">
+  <div class="section-inner">
+    <div class="eyebrow reveal">Who's Watching</div>
+    <h2 class="display reveal reveal-delay-1" style="margin-bottom:3rem;">An audience<br>brands <em>actually want.</em></h2>
+    <div class="audience-grid">
+      <div>
+        <div class="aud-bars reveal reveal-delay-1">
+          <div class="aud-bar"><div class="aud-bar-head"><span>Women</span><span class="aud-bar-pct">~80%</span></div><div class="aud-track"><div class="aud-fill" data-width="80"></div></div></div>
+          <div class="aud-bar"><div class="aud-bar-head"><span>Ages 18–24</span><span class="aud-bar-pct">~65%</span></div><div class="aud-track"><div class="aud-fill" data-width="65"></div></div></div>
+          <div class="aud-bar"><div class="aud-bar-head"><span>Latina / Hispanic</span><span class="aud-bar-pct">~55%</span></div><div class="aud-track"><div class="aud-fill" data-width="55"></div></div></div>
+          <div class="aud-bar"><div class="aud-bar-head"><span>US-Based</span><span class="aud-bar-pct">~90%</span></div><div class="aud-track"><div class="aud-fill" data-width="90"></div></div></div>
+          <div class="aud-bar"><div class="aud-bar-head"><span>College-Aged</span><span class="aud-bar-pct">~60%</span></div><div class="aud-track"><div class="aud-fill" data-width="60"></div></div></div>
+        </div>
+        <p class="aud-note reveal">*Estimated — update with your actual analytics data</p>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <p class="body-copy">My community is <strong>tightly-knit and deeply loyal</strong>. These are young Latina women and first-gen college students who don't just scroll past my content — they comment, DM, share, and come back. That's not passive reach. That's a relationship.</p>
+        <p class="body-copy" style="margin-top:1rem;">As a <strong>Mexican-American woman from a working-class Chicago neighborhood</strong>, I represent a demographic that's chronically underrepresented — and one that brands are actively trying to reach authentically.</p>
+        <p class="body-copy" style="margin-top:1rem;"><strong>When I talk about a product, my audience listens.</strong> Because I've never given them a reason not to.</p>
+        <div class="aud-tags">
+          <span class="atag">First-Gen Students</span><span class="atag">Latina Women</span><span class="atag">Gen Z</span><span class="atag">College Life</span><span class="atag">Chicago / Midwest</span><span class="atag">Beauty & Skincare</span><span class="atag">Women's Empowerment</span><span class="atag">Lifestyle</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section id="brands" class="section">
+  <div class="section-inner">
+    <div class="eyebrow reveal">Brand Work</div>
+    <h2 class="display reveal reveal-delay-1">I only partner with brands<br>I <em>actually believe in.</em></h2>
+    <p class="body-copy reveal reveal-delay-2">Every collaboration I take is authentic. My audience trusts me because I protect that trust — no random drops, no uninspired posts. Just real integrations that feel like natural extensions of my content.</p>
+    <div class="brands-grid">
+      <div class="brand-card reveal reveal-delay-1">
+        <span class="brand-check">✓ Partner</span>
+        <span class="brand-emoji">🖤</span>
+        <div class="brand-name">Savage X Fenty</div>
+        <div class="brand-cat">Lingerie & Fashion</div>
+        <p class="brand-desc">Body-positive fashion content aligned with my women's empowerment pillar. Celebrated confidence, femininity, and self-love in a way my audience connected with immediately.</p>
+      </div>
+      <div class="brand-card reveal reveal-delay-2">
+        <span class="brand-check">✓ Partner</span>
+        <span class="brand-emoji">💅</span>
+        <div class="brand-name">Fancii</div>
+        <div class="brand-cat">Beauty & Lifestyle</div>
+        <p class="brand-desc">Woven naturally into my daily lifestyle content — the kind of integration that doesn't feel like an ad because it genuinely fits my routine and aesthetic.</p>
+      </div>
+      <div class="brand-card reveal reveal-delay-3">
+        <span class="brand-check">✓ Partner</span>
+        <span class="brand-emoji">✨</span>
+        <div class="brand-name">Bubble Skincare</div>
+        <div class="brand-cat">Skincare</div>
+        <p class="brand-desc">Genuine reviews that resonated directly with my 18–24 female demographic. Bubble's ethos — accessible, real, Gen-Z-focused — mirrors mine completely.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY ME -->
+<section id="why" class="section">
+  <div class="section-inner">
+    <div class="eyebrow reveal">The Case</div>
+    <h2 class="display reveal reveal-delay-1">Why brands choose<br>to work <em>with me.</em></h2>
+    <div class="why-grid reveal reveal-delay-2">
+      <div class="why-item"><div class="why-num">01</div><div class="why-title">Trust Over Follower Count</div><p class="why-body">My community chose me. High-trust audiences convert at levels that big, passive followings can't match — and mine follows me for the real.</p></div>
+      <div class="why-item"><div class="why-num">02</div><div class="why-title">I Actually Study This</div><p class="why-body">I'm an Advertising major at UIUC. I understand brand voice, campaign goals, and strategy at a professional level. I'm not just a face — I'm a strategic partner.</p></div>
+      <div class="why-item"><div class="why-num">03</div><div class="why-title">An Underrepresented Voice</div><p class="why-body">First-gen, Mexican-American, from Chicago's working-class Bogan/Cragin neighborhood. Brands seeking authentic Latina representation don't get more real than this.</p></div>
+      <div class="why-item"><div class="why-num">04</div><div class="why-title">Proven Organic Growth</div><p class="why-body">10K subscribers at 15 with zero budget. That's not luck — that's the ability to connect. I've done it before, and I'm doing it again.</p></div>
+      <div class="why-item"><div class="why-num">05</div><div class="why-title">Authenticity Is the Strategy</div><p class="why-body">I've gone viral crying on camera. My audience follows me for the honest moments — which means when I recommend something, it lands. Because they know I mean it.</p></div>
+      <div class="why-item"><div class="why-num">06</div><div class="why-title">Full-Time After Graduation</div><p class="why-body">Graduating 2026, going full-time into content creation. Brands partnering with me now are building a long-term relationship with a creator who's only going up.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="section-inner">
+    <div class="eyebrow">Let's Connect</div>
+    <h2 class="display">Ready to make<br>something <em>real</em><br>together?</h2>
+    <p class="contact-lede">Sponsorships · Brand Deals · Gifted Collabs · Events · Speaking</p>
+    <a class="contact-email-link" href="mailto:youremail@email.com">youremail@email.com</a>
+    <div class="contact-socials">
+      <a class="soc-btn" href="https://www.tiktok.com/@mmelanytorress" target="_blank">🎵 TikTok</a>
+      <a class="soc-btn" href="https://www.instagram.com/mmelanytorress/" target="_blank">📸 Instagram</a>
+      <a class="soc-btn" href="#" target="_blank">▶️ YouTube</a>
+    </div>
+    <div class="contact-types">
+      <span class="ctype">Sponsored Content</span>
+      <span class="ctype">Gifted Product</span>
+      <span class="ctype">Brand Ambassador</span>
+      <span class="ctype">Events & Appearances</span>
+      <span class="ctype">UGC Creation</span>
+    </div>
+    <div class="contact-sig">Melany Torres</div>
+  </div>
+</section>
+
+<footer>
+  <a class="footer-logo" href="#hero">Melany Torres</a>
+  <span class="footer-copy">© 2025 · Chicago, IL · UIUC Advertising '26 · All Rights Reserved</span>
+</footer>
+
+<script>
+// Cursor
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+function animRing(){ rx+=(mx-rx)*.18; ry+=(my-ry)*.18; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); }
+animRing();
+
+// Nav scroll
+const nav = document.getElementById('nav');
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.nav-items a');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled', window.scrollY>60);
+  let cur2='';
+  sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-120) cur2=s.id; });
+  links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+cur2));
+});
+
+// Reveal on scroll
+const revEls = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
+},{threshold:.1});
+revEls.forEach(el=>obs.observe(el));
+
+// Audience bars
+const fills = document.querySelectorAll('.aud-fill');
+const barObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.style.width=e.target.dataset.width+'%'; barObs.unobserve(e.target); }});
+},{threshold:.3});
+fills.forEach(f=>barObs.observe(f));
+</script>
+</body>
+</html>
