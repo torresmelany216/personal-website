@@ -1,0 +1,15 @@
+PORTFOLIO IMAGES — CURRENT SLOTS
+================================
+Put images in this folder (melany-portfolio/images/).
+Use these filenames for the spots that are already wired up.
+
+HERO (top right — 3 photos)
+  hero-1.jpg    (top left)
+  hero-2.jpg    (top right)
+  hero-3.jpg    (bottom full width)
+
+ABOUT (Meet Melany section — 2 photos)
+  about-main.jpg   (large main photo)
+  about-accent.jpg (smaller lifestyle photo)
+
+For the rest of your photos (stickers, aesthetic spots): tell me where each should go and I’ll add the exact filename/code for that spot.
